@@ -1,4 +1,4 @@
-package com.invernadero.simulador.config;
+package gd.invernadero.simulador.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
@@ -27,7 +27,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue colaTelemetria() {
-        return QueueBuilder.durable(COLA_TELEMETRIA).build();
+        return QueueBuilder.nonDurable(COLA_TELEMETRIA).ttl(10_000).maxLength(100).build();
     }
 
     @Bean
@@ -53,10 +53,5 @@ public class RabbitMQConfig {
     @Bean
     public Binding bindingUmbrales(Queue colaUmbrales, TopicExchange exchange) {
         return BindingBuilder.bind(colaUmbrales).to(exchange).with(RUTA_UMBRALES);
-    }
-
-    @Bean
-    public MessageConverter conversorJson() {
-        return new JacksonJsonMessageConverter();
     }
 }

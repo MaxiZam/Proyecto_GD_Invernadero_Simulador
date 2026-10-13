@@ -1,4 +1,4 @@
-package com.invernadero.simulador.dto;
+package gd.invernadero.simulador.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

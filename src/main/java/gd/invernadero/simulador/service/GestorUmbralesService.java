@@ -1,7 +1,7 @@
-package com.invernadero.simulador.service;
+package gd.invernadero.simulador.service;
 
-import com.invernadero.simulador.config.RabbitMQConfig;
-import com.invernadero.simulador.dto.ConfiguracionUmbralesDTO;
+import gd.invernadero.simulador.config.RabbitMQConfig;
+import gd.invernadero.simulador.dto.ConfiguracionUmbralesDTO;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
