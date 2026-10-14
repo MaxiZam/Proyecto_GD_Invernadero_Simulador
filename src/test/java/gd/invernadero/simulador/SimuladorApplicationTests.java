@@ -1,13 +1,19 @@
 package gd.invernadero.simulador;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+		"spring.rabbitmq.listener.simple.auto-startup=false",
+		"simulador.frecuencia-envio-ms=3600000"
+})
 class SimuladorApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+	@MockitoBean
+	RabbitTemplate rabbitTemplate;
 
+	@Test
+	void contextLoads() {}
 }

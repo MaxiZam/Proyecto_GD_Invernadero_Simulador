@@ -16,9 +16,25 @@ public class GestorUmbralesService {
             new ConfiguracionUmbralesDTO(18.0, 28.0, 50.0, 80.0, 50.0, 75.0, 400, 900);
 
     @RabbitListener(queues = RabbitMQConfig.COLA_UMBRALES)
-    public void recibirNuevosUmbrales(ConfiguracionUmbralesDTO nuevosUmbrales) {
-        this.umbrales = nuevosUmbrales;
-        log.info("Simulador recalibrado con nuevos umbrales: {}", nuevosUmbrales);
+    public void recibirNuevosUmbrales(ConfiguracionUmbralesDTO n) {
+        if (!esValido(n)) {
+            log.warn("Umbrales inválidos descartados: {}", n);
+            return;
+        }
+        this.umbrales = n;
+        log.info("Simulador recalibrado con nuevos umbrales: {}", n);
+    }
+
+    private boolean esValido(ConfiguracionUmbralesDTO n) {
+        return n != null
+                && n.getTempMin() != null && n.getTempMax() != null
+                && n.getHumSueloMin() != null && n.getHumSueloMax() != null
+                && n.getHumAireMin() != null && n.getHumAireMax() != null
+                && n.getLuzMin() != null && n.getLuzMax() != null
+                && n.getTempMin() < n.getTempMax()
+                && n.getHumSueloMin() < n.getHumSueloMax()
+                && n.getHumAireMin() < n.getHumAireMax()
+                && n.getLuzMin() < n.getLuzMax();
     }
 
 }

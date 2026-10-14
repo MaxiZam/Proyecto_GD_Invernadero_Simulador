@@ -19,4 +19,5 @@ public class DatosInvernaderoDTO implements Serializable {
     private boolean ventanalesAbiertos;
     private boolean persianasEnrolladas;
     private boolean bombaActiva;
+    private boolean esDeDia;
 }
