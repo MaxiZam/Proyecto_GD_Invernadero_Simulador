@@ -21,6 +21,7 @@ public class GestorUmbralesService {
             log.warn("Umbrales inválidos descartados: {}", n);
             return;
         }
+        if (n.equals(this.umbrales)) return;   // re-publicación periódica sin cambios
         this.umbrales = n;
         log.info("Simulador recalibrado con nuevos umbrales: {}", n);
     }
@@ -36,5 +37,4 @@ public class GestorUmbralesService {
                 && n.getHumAireMin() < n.getHumAireMax()
                 && n.getLuzMin() < n.getLuzMax();
     }
-
 }

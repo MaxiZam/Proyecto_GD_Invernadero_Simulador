@@ -34,12 +34,15 @@ public class GestorActuadoresService {
         }
         String clave = comando.getNombreActuador().trim().toLowerCase(Locale.ROOT);
         EstadoActuador nuevo = new EstadoActuador(comando.isModoAutomatico(), comando.isEstadoManual());
-        if (mapaActuadores.replace(clave, nuevo) == null) {   // null = clave inexistente
+        EstadoActuador previo = mapaActuadores.replace(clave, nuevo);
+        if (previo == null) {   // clave inexistente
             log.warn("Actuador desconocido '{}'; comando descartado", comando.getNombreActuador());
             return;
         }
-        log.info("Actuador [{}] configurado: automático={}, estado manual={}",
-                clave, nuevo.modoAutomatico(), nuevo.estadoManual());
+        if (!previo.equals(nuevo)) {
+            log.info("Actuador [{}] configurado: automático={}, estado manual={}",
+                    clave, nuevo.modoAutomatico(), nuevo.estadoManual());
+        }
     }
 
     public boolean resolverEstado(String nombreActuador, boolean condicionAutomatica) {

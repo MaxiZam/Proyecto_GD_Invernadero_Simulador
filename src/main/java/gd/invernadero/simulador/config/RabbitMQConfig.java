@@ -20,11 +20,19 @@ public class RabbitMQConfig {
     public static final String COLA_UMBRALES = "invernadero.umbrales.cola";
     public static final String RUTA_UMBRALES = "invernadero.umbrales.key";
 
+    /** JSON en lugar de serialización Java: backend y simulador tienen DTOs en paquetes distintos.
+     *  Spring Boot lo asocia solo al RabbitTemplate y a los @RabbitListener. */
+    @Bean
+    public MessageConverter conversorJson() {
+        return new JacksonJsonMessageConverter();
+    }
+
     @Bean
     public TopicExchange exchange() {
         return new TopicExchange(INTERCAMBIO_INVERNADERO);
     }
 
+    // Telemetría efímera: debe declararse IGUAL en el backend (si no, PRECONDITION_FAILED)
     @Bean
     public Queue colaTelemetria() {
         return QueueBuilder.nonDurable(COLA_TELEMETRIA).ttl(10_000).maxLength(100).build();
@@ -32,12 +40,12 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue colaComandos() {
-        return QueueBuilder.durable(COLA_COMANDOS).build();
+        return QueueBuilder.durable(COLA_COMANDOS).ttl(120_000).build();
     }
 
     @Bean
     public Queue colaUmbrales() {
-        return QueueBuilder.durable(COLA_UMBRALES).build();
+        return QueueBuilder.durable(COLA_UMBRALES).ttl(120_000).build();
     }
 
     @Bean
